@@ -46,6 +46,7 @@ float texh(in vec2 p, in float str)
         float g = gnoise(vec2(u_noiseX, u_noiseY)*p); //亂數範圍 [0,1]
         g=smoothstep(u_SmoothStepMin, u_SmoothStepMax, g);
         
+        //mod function inspired by someone on shadertoy, however i cant find the source
         float stride = 4.* u_BrushStroke; //must be multiplier by 4
         p.xy = mod(p.x + vec2(p.y,-p.y), vec2(stride)); //mod就是斜的 x - y * floor(x/y)
         if(i/2==0) p.xy = p.yx;
