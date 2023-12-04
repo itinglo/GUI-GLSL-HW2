@@ -7,8 +7,11 @@ let textureBase;
 // Part 2 - Step 2.1
 // from here
 let control = {
-	xBrickAmount: 50.0,
-	yBrickAmount: 50.0,
+	u_SmoothStepMin: 0.091,
+	u_SmoothStepMax: 0.19,
+	u_BrushStroke:45.0,
+	u_noiseX: 3.4,
+	u_noiseY:1.72,
 }
 // to here
 
@@ -17,16 +20,19 @@ let control = {
 window.onload = function() {
 	var gui = new dat.GUI();
 	gui.domElement.id = 'gui';
-	gui.add(control, 'xBrickAmount', 1, 100).name("X-axis");
-	gui.add(control, 'yBrickAmount', 1, 100).name("Y-axis");
+	gui.add(control, 'u_SmoothStepMin', 0.001, 0.2).name("SmoothStep Min");
+	gui.add(control, 'u_SmoothStepMax', 0.1, 1.0).name("SmoothStep Max");
+	gui.add(control, 'u_BrushStroke', 0.1, 200.0).name("Stroke Direction");
+	gui.add(control, 'u_noiseX',0.01,10.0).name("Noise X");
+	gui.add(control, 'u_noiseY',0.01,10.0).name("Noise Y");
 };
 // to here
 
 // Part 1 - Step 4
 // from here
 function preload(){
-	theShader = loadShader('vert.glsl', 'frag.frag');
-	textureBase = loadImage("data/MonaLisa.jpg");
+	theShader = loadShader('vert.glsl', 'HatchingProcedural_JpPine.frag');
+	textureBase = loadImage("data/BlurPine.jpg");
 }
 // to here
 
@@ -84,10 +90,13 @@ function draw() {
 
 	// Part 2 - Step 2.3
 	// from here
-	theShader.setUniform("u_xBrickAmount", control.xBrickAmount);
-	theShader.setUniform("u_yBrickAmount", control.yBrickAmount);
+	theShader.setUniform("u_SmoothStepMin", control.u_SmoothStepMin);
+	theShader.setUniform("u_SmoothStepMax", control.u_SmoothStepMax);
+	theShader.setUniform("u_BrushStroke", control.u_BrushStroke);
+	theShader.setUniform("u_noiseX", control.u_noiseX);
+	theShader.setUniform("u_noiseY", control.u_noiseY);
 
-	theShader.setUniform("u_texBase", textureBase);
+	theShader.setUniform("u_tex0", textureBase);
 	// to here
 	
 	rect(width * -0.5, height * -0.5, width, height);
